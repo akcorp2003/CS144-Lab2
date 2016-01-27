@@ -20,21 +20,58 @@ public class Entry {
 		System.out.println(b_xml.get_root().getNodeName());
 		
 		Document xml_doc = b_xml.get_document();
-		NodeList nList = xml_doc.getElementsByTagName("Item");
+		NodeList auctionList = xml_doc.getElementsByTagName("Item");
 		System.out.println("============================");
 		 
-		for (int i = 0; i < nList.getLength(); i++)
+		for (int i = 0; i < auctionList.getLength(); i++)
 		{
-		 Node node = nList.item(i);
+		 Node node = auctionList.item(i);
 		 System.out.println("");    //Just a separator
 		 if (node.getNodeType() == Node.ELEMENT_NODE)
 		 {
 		    //Print each employee's detail
-		    Element eElement = (Element) node;
-		    System.out.println("Name : "    + eElement.getElementsByTagName("Name").item(0).getTextContent());
-		    System.out.println("Category : "  + eElement.getElementsByTagName("Category").item(0).getTextContent());
-		    System.out.println("Bids : "   + eElement.getElementsByTagName("Bids").item(0).getTextContent());
-		    System.out.println("Location : "    + eElement.getElementsByTagName("Location").item(0).getTextContent());
+		    Element item = (Element) node;
+		    System.out.println("Name : "    + item.getElementsByTagName("Name").item(0).getTextContent());
+		    System.out.println("Category : "  + item.getElementsByTagName("Category").item(0).getTextContent());
+		    //System.out.println("Bids : "   + eElement.getElementsByTagName("Bids").item(0).getTextContent());
+		    NodeList bidList = item.getElementsByTagName("Bid");
+		    for(int j = 0; j < bidList.getLength(); j++)
+		    {
+		    	NodeList bidderList = item.getElementsByTagName("Bidder");
+		    	for(int k = 0; k < bidderList.getLength(); k++){
+		    		Element bidder = (Element) bidderList.item(k);
+		    		System.out.println("Rating: " + bidder.getAttribute("Rating"));
+		    		System.out.println("UserID: " + bidder.getAttribute("UserID"));
+		    		//System.out.println("Location: " + item.getElementsByTagName("Location").item(0).getTextContent());
+		    		NodeList locations = item.getElementsByTagName("Location");
+				    for(i = 0; i < locations.getLength(); i++)
+				    {
+				    	Element loc = (Element) locations.item(i);
+				    	if(!loc.hasAttributes()){
+				    		System.out.println("Location: " + loc.getTextContent());
+				    	}
+				    }
+		    		System.out.println("Country: " + item.getElementsByTagName("Country").item(0).getTextContent());
+		    		System.out.println("Time: " + item.getElementsByTagName("Time").item(0).getTextContent());
+		    		System.out.println("Amount: " + item.getElementsByTagName("Amount").item(0).getTextContent());
+		    	}
+		    	if(bidderList.getLength() == 0)
+		    	{
+		    		System.out.println("Bids: NULL");
+		    	}
+		    }
+		    
+		    //System.out.println("Location : "    + item.getElementsByTagName("Location").item(0).getTextContent());
+		    NodeList locations = item.getElementsByTagName("Location");
+		    for(i = 0; i < locations.getLength(); i++)
+		    {
+		    	Element loc = (Element) locations.item(i);
+		    	if(loc.hasAttributes()){
+		    		System.out.println("Location: " + loc.getTextContent());
+		    		System.out.println("Latitude: " + loc.getAttribute("Latitude"));
+		    		System.out.println("Longitude: " + loc.getAttribute("Longitude"));
+		    	}
+		    }
 		 }
 		}
 	}
